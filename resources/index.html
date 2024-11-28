@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>RunBox</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div id="neutralinoapp">
+      <h1>RunBox</h1>
+      <div>
+        <input type="text" id="appName" placeholder="App Name">
+        <input type="text" id="command" placeholder="Exec Command">
+        <button onclick="addAppFromInput()">Add App</button>
+    </div>
+
+    <h2>App List</h2>
+    <div id="appList"></div>
+
+      <div id="info"></div>
+      <button id="openCalculator">Open Calculator</button>
+      <br/>
+      <img src="/icons/logo.gif" alt="Neutralinojs" />
+      <div>
+        <a href="#" onclick="openDocs();">Docs</a> &middot;  
+        <a href="#" onclick="openTutorial();">Video tutorial</a>
+      </div>
+    </div>
+    <!-- Neutralino.js client. This file is gitignored, 
+        because `neu update` typically downloads it.
+        Avoid copy-pasting it. 
+        -->
+    <script src="/js/neutralino.js"></script>
+    <!-- Your app's source files -->
+    <script src="/js/main.js"></script>
+    <script src="/js/runbox.js"></script>
+  </body>
+</html>
