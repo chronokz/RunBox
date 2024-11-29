@@ -96,4 +96,4 @@ if(NL_OS != "Darwin") { // TODO: Fix https://github.com/neutralinojs/neutralinoj
 }
 
 // Display app information
-showInfo();
+// showInfo();

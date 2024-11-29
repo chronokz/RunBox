@@ -2,37 +2,42 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RunBox</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./css/modal.css">
   </head>
   <body>
     <div id="neutralinoapp">
       <h1>RunBox</h1>
-      <div>
+      <!-- <div>
         <input type="text" id="appName" placeholder="App Name">
         <input type="text" id="command" placeholder="Exec Command">
-        <button onclick="addAppFromInput()">Add App</button>
-    </div>
+        <button onclick="openModal()">Add App</button>
+    </div> -->
 
-    <h2>App List</h2>
-    <div id="appList"></div>
+    <div class="container" id="appList"></div>
 
-      <div id="info"></div>
-      <button id="openCalculator">Open Calculator</button>
-      <br/>
-      <img src="/icons/logo.gif" alt="Neutralinojs" />
-      <div>
-        <a href="#" onclick="openDocs();">Docs</a> &middot;  
-        <a href="#" onclick="openTutorial();">Video tutorial</a>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+          <div class="modal-header">Edit Application</div>
+          <div class="modal-body">
+              <input type="text" id="name" placeholder="Application Name">
+              <input type="text" id="command" placeholder="Execution Command">
+          </div>
+          <div class="modal-footer">
+              <button class="save" onclick="saveApp()">Save</button>
+              <button class="cancel" onclick="closeModal()">Cancel</button>
+          </div>
       </div>
     </div>
-    <!-- Neutralino.js client. This file is gitignored, 
-        because `neu update` typically downloads it.
-        Avoid copy-pasting it. 
-        -->
+  
+
     <script src="/js/neutralino.js"></script>
-    <!-- Your app's source files -->
-    <script src="/js/main.js"></script>
-    <script src="/js/runbox.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/runbox.js"></script>
+    <script src="./js/modal.js"></script>
   </body>
 </html>

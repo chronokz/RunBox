@@ -16,6 +16,13 @@ async function getApps() {
 async function saveApps(apps) {
     await N.filesystem.writeFile(appsPath, JSON.stringify({ apps }));
 }
+function getApp(index) {
+    if (!index) {
+        return {name: '', command: ''};
+    }
+    const app = appList[index];
+    return app;
+}
 
 // Функция для чтения списка приложений из файла
 async function loadApps() {
@@ -36,14 +43,25 @@ function renderAppList(apps) {
 
     apps.forEach((app, index) => {
         const appItem = document.createElement('div');
-        appItem.classList.add('app-item');
+        appItem.classList.add('tile');
+        appItem.addEventListener('click', function() {
+            runApp(index);
+        });
         appItem.innerHTML = `
-            <b onclick="runApp(${index})">${app.name}</b> 
-            <button onclick="editApp(${index})">Edit</button>
-            <button onclick="deleteApp(${index})">Delete</button>
+            <div class="actions">
+                <button onclick="openModal(event, ${index})" title="Edit"><i class="fas fa-edit"></i></button>
+                <button onclick="deleteApp(event, ${index})" title="Delete"><i class="fas fa-trash"></i></button>
+            </div>
+            <i class="fa-solid fa-shuttle-space icon"></i>
+            <div class="name">${app.name}</div>
         `;
         appListElement.appendChild(appItem);
     });
+    const addItem = document.createElement('div');
+    addItem.classList.add('tile');
+    addItem.addEventListener('click', function(){ openModal(event) });
+    addItem.innerHTML = `<i class="fa-solid fa-circle-plus icon"></i>`;
+    appListElement.appendChild(addItem);
 }
 
 // Функция для добавления нового приложения
@@ -60,10 +78,25 @@ async function addApp(name, command) {
     }
 }
 
+async function saveApp() {
+    const apps = await getApps();
+    const app = {
+        name: document.getElementById('name').value.trim(),
+        command: document.getElementById('command').value.trim(),
+    };
+    if (!currentEditIndex) {
+        apps.push(app);
+    } else {
+        apps[index] = app;
+    }
+    await saveApps(apps);
+    loadApps();
+    closeModal();
+}
+
 // Функция для редактирования приложения
 async function editApp(index) {
-    const apps = await getApps();
-    const app = apps[index];
+    const app = getApp(index);
 
     const newName = prompt('Enter new name:', app.name);
     const newCommand = prompt('Enter new exec command:', app.Command);
@@ -76,7 +109,8 @@ async function editApp(index) {
 }
 
 // Функция для удаления приложения
-async function deleteApp(index) {
+async function deleteApp(event, index) {
+    event.stopPropagation();
     const apps = await getApps();
     apps.splice(index, 1); // Удаляем приложение по индексу
     await saveApps(apps);
@@ -99,7 +133,6 @@ function addAppFromInput() {
 // Функция для запуска приложения по индексу
 function runApp(index) {
     const app = appList[index];
-    console.log(app);
     if (app && app.command) {
         Neutralino.os.execCommand(app.command)
             .then(() => {
@@ -112,16 +145,6 @@ function runApp(index) {
         console.error('Приложение не найдено или не указана команда');
     }
 }
-
-const cmd = 'C:\Users\chrono\AppData\Local\Programs\Evernote\Evernote.exe';
-document.getElementById('openCalculator').addEventListener('click', () => {
-    N.os.execCommand(cmd).then(() => {
-        console.log('Calculator opened successfully.');
-    }).catch((err) => {
-        console.error('Failed to open calculator:', err);
-    });
-});
-
 
 
 loadApps();

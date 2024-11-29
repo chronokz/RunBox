@@ -1,15 +1,15 @@
-# neutralinojs-minimal
+# RunBox
 
-The default template for a Neutralinojs app. It's possible to use your favorite frontend framework by using [these steps](https://neutralino.js.org/docs/getting-started/using-frontend-libraries).
+**RunBox** is a lightweight and convenient launcher application that allows you to launch your favorite programs and games with a simple click. With its help, you can manage the list of applications, add new ones, edit or delete existing ones. The main idea of ​​RunBox is the easiest access to the things that need to run via remote connection. RunBox is designed for those who value order and want to quickly and efficiently organize access to their tools! 🚀
 
-## Contributors
+**Plans:**
+- [ ] Design
+- [ ] Covers
+- [ ] Fullscreen
+- [ ] Gamepad Support
 
-[![Contributors](https://contrib.rocks/image?repo=neutralinojs/neutralinojs-minimal)](https://github.com/neutralinojs/neutralinojs-minimal/graphs/contributors)
-
-## License
-
-[MIT](LICENSE)
-
-## Icon credits
-
-- `trayIcon.png` - Made by [Freepik](https://www.freepik.com) and downloaded from [Flaticon](https://www.flaticon.com)
+### Development: 
+- Clone
+- Install neu `npm install -g @neutralinojs/neu`
+- Update neu `neu update`
+- Run app `neu run`
