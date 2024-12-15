@@ -1,3 +1,8 @@
+:root {
+    --main-bg-color: #12141E;
+    --white: #fff;
+}
+
 #neutralinoapp {
     text-align: center;
     -webkit-user-select: none;
@@ -5,13 +10,52 @@
     cursor: default;
 }
 
+#isSaving {
+    display: none;
+}
 
 body {
     margin: 0;
     padding: 0;
     font-family: 'Nunito Sans', Arial, sans-serif;
-    background-color: rgb(18, 20, 30);
-    color: white;
+    background-color: var(--main-bg-color); /* rgb(18, 20, 30);*/
+    color: var(--white);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.top-buttons {
+    padding: 20px;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.top-buttons a {
+    width: 50px;
+    height: 50px;
+    background-color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    border: 1px dashed var(--white);
+}
+
+.top-buttons a:hover {
+    border-color: var(--main-bg-color);
+}
+
+.top-buttons i {
+    font-size: 24px;
+    color: #333;
 }
 
 .container {
@@ -23,23 +67,10 @@ body {
 }
 
 .tile {
-    /* horizontal: 92x43 */
-    /* vertial: 2x3 */
-    width: 234px;
-    height: 351px;
-    /*
-    width: 262px;
-    height: 122px;
-    */
-    /*
-    width: 460px;
-    height: 215px;
-    */
-    /*
-    width: 324px;
-    height: 151px;
-    */
+    width: 400px;
+    height: 225px;
     border-radius: 10px;
+    background-size: contain;
     background-color: rgb(30, 35, 50);
     display: flex;
     align-items: center;
@@ -58,10 +89,10 @@ body {
 .tile .icon {
     transition: all 0.3s ease;
     font-size: 100px;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
 }
 
-.tile:hover .icon {
+.tile:hover .icon:not(.fa-circle-plus) {
     transform: rotate(-45deg);
 }
 
@@ -98,27 +129,4 @@ body {
     font-size: 1.2em;
     cursor: pointer;
     transition: color 0.3s ease;
-}
-
-
-.tile.new {
-    align-items: center;
-    justify-content: center;
-    
-}
-
-.tile.new .icon {
-    width: 100px;
-    height: 100px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    font-style: normal;
-    font-size: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.tile.new:hover .icon {
-    transform: rotate(-90deg);
 }

@@ -11,33 +11,47 @@
   </head>
   <body>
     <div id="neutralinoapp">
-      <h1>RunBox</h1>
-      <!-- <div>
-        <input type="text" id="appName" placeholder="App Name">
-        <input type="text" id="command" placeholder="Exec Command">
-        <button onclick="openModal()">Add App</button>
-    </div> -->
-
-    <div class="container" id="appList"></div>
-
-    <div id="modal" class="modal">
-      <div class="modal-content">
-          <div class="modal-header">Edit Application</div>
-          <div class="modal-body">
-              <input type="text" id="name" placeholder="Application Name">
-              <input type="text" id="command" placeholder="Execution Command">
-          </div>
-          <div class="modal-footer">
-              <button class="save" onclick="saveApp()">Save</button>
-              <button class="cancel" onclick="closeModal()">Cancel</button>
-          </div>
+      <div class="header">
+        <ul class="top-buttons">
+          <li><a href="#" onclick="actionLock()" title="Lock"><i class="fa-solid fa-user-lock"></i></a></li>
+          <li><a href="#" onclick="actionLogout()" title="Logout"><i class="fa-solid fa-user-slash"></i></a></li>
+          <li><a href="#" onclick="actionPower()" title="Shutdown"><i class="fa-solid fa-power-off"></i></a></li>
+        </ul>
+        <h1>RunBox</h1>
+        <ul class="top-buttons">
+          <li><a href="#" onclick="actionScreenConfig()" title="Display Settings"><i class="fa-solid fa-desktop"></i></a></li>
+          <li><a href="#" onclick="actionFullscreen()" title="Maximize / Minimize"><i class="fa-solid fa-minimize" id="fullscreenIcon"></i></a></li>
+          <li><a href="#" onclick="actionExit()" title="Exit"><i class="fa-solid fa-xmark"></i></a></li>
+        </ul>
       </div>
+
+      <div class="container" id="appList"></div>
+
+      <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Edit Application</div>
+            <div class="modal-body">
+                <input type="text" id="name" placeholder="Application Name">
+                <input type="text" id="command" placeholder="Execution Command">
+            </div>
+            <div class="modal-footer">
+                <button class="save" onclick="saveApp()">
+                  Save
+                  <i class="fa-solid fa-spinner fa-spin-pulse" id="isSaving"></i>
+                </button>
+                <button class="cancel" onclick="closeModal()">
+                  Cancel
+                </button>
+            </div>
+        </div>
+      </div>
+    
     </div>
-  
 
     <script src="/js/neutralino.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/runbox.js"></script>
     <script src="./js/modal.js"></script>
+    <script src="./js/actions.js"></script>
   </body>
 </html>

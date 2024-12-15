@@ -1,6 +1,7 @@
 const N = Neutralino;
-const filePath = 'data';
-const appsPath = `${filePath}/apps.json`;
+const appsPath = `data/apps.json`;
+const coversPath = 'resources/covers';
+const RAWG_API_KEY = '01ea42e82fd04299b3c8ba5a5df817aa';
 let appList = [];
 
 N.init();
@@ -13,9 +14,11 @@ async function getApps() {
     }
     return appList;
 }
+
 async function saveApps(apps) {
     await N.filesystem.writeFile(appsPath, JSON.stringify({ apps }));
 }
+
 function getApp(index) {
     if (!index) {
         return {name: '', command: ''};
@@ -24,22 +27,18 @@ function getApp(index) {
     return app;
 }
 
-// Функция для чтения списка приложений из файла
 async function loadApps() {
     try {
         const apps = await getApps();
-        console.log(apps);
         renderAppList(apps);
     } catch (error) {
         console.error('Ошибка при загрузке списка приложений:', error);
     }
 }
 
-// Функция для отображения списка приложений
 function renderAppList(apps) {
     const appListElement = document.getElementById('appList');
     appListElement.innerHTML = '';
-    console.log(apps);
 
     apps.forEach((app, index) => {
         const appItem = document.createElement('div');
@@ -51,10 +50,13 @@ function renderAppList(apps) {
             <div class="actions">
                 <button onclick="openModal(event, ${index})" title="Edit"><i class="fas fa-edit"></i></button>
                 <button onclick="deleteApp(event, ${index})" title="Delete"><i class="fas fa-trash"></i></button>
-            </div>
-            <i class="fa-solid fa-shuttle-space icon"></i>
-            <div class="name">${app.name}</div>
-        `;
+            </div>`;
+        if (app.cover) {
+            appItem.style.backgroundImage = `url(./covers/${app.cover})`;
+        } else {
+            appItem.innerHTML += `<i class="fa-solid fa-shuttle-space icon"></i>`;
+        }
+        appItem.innerHTML += `<div class="name">${app.name}</div>`;
         appListElement.appendChild(appItem);
     });
     const addItem = document.createElement('div');
@@ -64,7 +66,6 @@ function renderAppList(apps) {
     appListElement.appendChild(addItem);
 }
 
-// Функция для добавления нового приложения
 async function addApp(name, command) {
     const newApp = { name, command };
 
@@ -79,22 +80,27 @@ async function addApp(name, command) {
 }
 
 async function saveApp() {
+    document.getElementById('isSaving').style.display = 'inline-block';
     const apps = await getApps();
-    const app = {
-        name: document.getElementById('name').value.trim(),
-        command: document.getElementById('command').value.trim(),
-    };
+    const name = document.getElementById('name').value.trim();
+    const command = document.getElementById('command').value.trim();
+    const image = await getGameCover(name);
+    let cover = '';
+    if (image) {
+        cover = await saveGameCover(image);
+    }
+    const app = { name, command, cover };
     if (!currentEditIndex) {
         apps.push(app);
     } else {
-        apps[index] = app;
+        apps[currentEditIndex] = app;
     }
     await saveApps(apps);
     loadApps();
+    document.getElementById('isSaving').style.display = 'none';
     closeModal();
 }
 
-// Функция для редактирования приложения
 async function editApp(index) {
     const app = getApp(index);
 
@@ -108,11 +114,10 @@ async function editApp(index) {
     }
 }
 
-// Функция для удаления приложения
 async function deleteApp(event, index) {
     event.stopPropagation();
     const apps = await getApps();
-    apps.splice(index, 1); // Удаляем приложение по индексу
+    apps.splice(index, 1);
     await saveApps(apps);
     loadApps();
 }
@@ -130,7 +135,6 @@ function addAppFromInput() {
     }
 }
 
-// Функция для запуска приложения по индексу
 function runApp(index) {
     const app = appList[index];
     if (app && app.command) {
@@ -144,6 +148,44 @@ function runApp(index) {
     } else {
         console.error('Приложение не найдено или не указана команда');
     }
+}
+
+async function getGameCover(gameName) {
+    const url = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(gameName)}&platforms=4`;
+    try {
+        const response = await Neutralino.os.execCommand(`curl -X GET "${url}"`);
+        const data = JSON.parse(response.stdOut);
+        if (data.results && data.results.length > 0) {
+            return data.results[0].background_image;
+        } else {
+            return '';
+        }
+    } catch (error) {
+        console.error('Ошибка при выполнении команды:', error);
+    }
+}
+
+async function saveGameCover(imageUrl) {
+    console.log(imageUrl);
+    const fileName = imageUrl.split('/').pop();
+    const filePath = `${coversPath}/${fileName}`;
+
+    const imageResponse = await fetch(imageUrl);
+    const imageBlob = await imageResponse.blob();
+    const imageArrayBuffer = await imageBlob.arrayBuffer();
+
+    try {
+        await Neutralino.filesystem.writeBinaryFile(filePath, new Uint8Array(imageArrayBuffer));
+        console.log(`Изображение сохранено как ${filePath}`);
+        return fileName;
+    } catch (err) {
+        console.error('Ошибка при сохранении изображения:', err);
+    }
+}
+
+function getFileName(imageUrl) {
+    console.log('imageUrl', imageUrl);
+    return imageUrl.split('/').pop();
 }
 
 
