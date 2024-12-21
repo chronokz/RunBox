@@ -4,7 +4,7 @@ function openModal(event, index = null) {
     event.stopPropagation();
     currentEditIndex = index;
     const app = getApp(index);
-    const title = index ? 'Edit' : 'Add';
+    const title = index !== null ? 'Edit' : 'Add';
 
     document.getElementById('modal').querySelector('.modal-header').innerText = title + ' Application';
     document.getElementById('name').value = app.name;
